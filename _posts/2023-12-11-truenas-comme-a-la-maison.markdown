@@ -5,10 +5,10 @@ date:   2023-12-11 23:36:54 +0100
 categories: tutos pfsense truenas wireguard
 ---
 <p align="center">
-![Wireguard+pfSense ](/assets/images/1701962718-221022-image.png)
+	<img width="200" src="https://mondedie.fr/assets/files/2023-12-07/1701962718-221022-image.png" alt="Wireguard + pfSense">
+</p>
 
 ## Et une couche de TrueNAS Scale
-</p>
 
 Sur un coup de tête, en période de "vacances", avec les copains dans le casque on dit beaucoup de conneries et nous en faisons tout autant. 
 Profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions. 
