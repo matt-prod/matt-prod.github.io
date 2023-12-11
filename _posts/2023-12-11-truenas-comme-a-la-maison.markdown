@@ -5,10 +5,10 @@ date:   2023-12-11 23:36:54 +0100
 categories: tutos pfsense truenas wireguard
 ---
 <p align="center">
-	<img width="200" src="https://mondedie.fr/assets/files/2023-12-07/1701962718-221022-image.png" alt="Wireguard + pfSense">
+	<img width="600" src="https://mondedie.fr/assets/files/2023-12-07/1701962718-221022-image.png" alt="Wireguard + pfSense">
 </p>
 
-## Et une couche de TrueNAS Scale
+# Et une couche de TrueNAS Scale
 
 Sur un coup de tête, en période de "vacances", avec les copains dans le casque on dit beaucoup de conneries et nous en faisons tout autant. 
 Profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions. 
@@ -28,21 +28,20 @@ Sur cette image, il faut pense que Server = pfSense, et Router = TrueNAS.
 
 > ( Pour mémoire, j'utilise une partie de son article d'où est tirée cette image pour une autre utilisation dans un cadre professionnel afin de ne pas avoir à ouvrir de port du côté du lan entreprise )
 
-### Résumons : 
+## Résumons : 
 - J'ai besoin d'accéder à un truenas pour le stockage réseau. 
 - Je n'ai pas envie de mettre une ipv4 publique, et d'avoir un flux en clair qui passe.
 - J'avais envie de découvrir wireguard sur pfsense et de m'y essayer.
 - Et puis c'était l'occasion de faire des conneries avec les copains !
 
-### Etape 1 : avoir un pfsense qui tourne
+## Etape 1 : avoir un pfsense qui tourne
 Installer wireguard donc sur ce dernier une fois installé on le retrouve dans l'onglet VPN ( la partie installation se passe dans System -> Package Manager )
 
 ![wireguard pfsense](/assets/images/1701962767-974820-image.png)
 
-### Etape 2 : configurer le tunnel et le peer
+## Etape 2 : configurer le tunnel et le peer
 
 ![tunnel wireguard](/assets/images/1701962775-261594-image.png)
-
 
 **Enable** : coché ( on l'active )
 
@@ -60,7 +59,7 @@ Je ne vais pas faire un cours complet sur ce point là.
 
 Nous voilà avec un tunnel reste à mettre un client.
 
-### Etape 3 : Générer la paire de clé publique/privée côté client.
+## Etape 3 : Générer la paire de clé publique/privée côté client.
 Sous windows, quand on crée un tunnel dans wireguard il les affiches : 
 
 ![windows tunnel](/assets/images/1701962791-339903-image.png)
@@ -76,7 +75,7 @@ b9FjbupGC7fomO5U4jL5Irt1ZV5rq4c+utGKj53HXgU=
 ```
 Donc nous voilà avec nos clés on peut aller créer notre peer sur pfsense.
 
-### Etape 4 : Créer un peer
+## Etape 4 : Créer un peer
 ![pfsense wireguard](/assets/images/1701962819-965576-image.png)
 
 on sélectionne l'onglet Peers et on clique sur Add Peers ( le bouton vert en bas à droite )
@@ -99,7 +98,7 @@ on sélectionne l'onglet Peers et on clique sur Add Peers ( le bouton vert en ba
 
 **SAVE PEER !!**
 
-### Etape 5 : créer le fichier de conf à utiliser sur le client
+## Etape 5 : créer le fichier de conf à utiliser sur le client
 
 ```
 [Interface]
@@ -112,7 +111,7 @@ AllowedIPs = 10.6.210.1/32, 192.168.20.0/24 <- Ici on autorise l'acces au pfsens
 Endpoint = IPPUBLIQUEDUPFSENSE:51820
 ```
 
-### Etape 6 : quelques règles de firewall
+## Etape 6 : quelques règles de firewall
 On a donc le serveur actif, un client et le fichier de conf dans le client mais il faudrait faire quelques règles de pare-feu quand même ;)
 Dans mon cas, je privilégie l'ipv6 dans la majorité des cas. 
 J'ai donc attribué une ipv6 (publique) à pfsense et une ipv4 privée sur la patte wan fais un petit tour sur le tuto qui traine sur le forum de quand j'ajoute des ips sur mon proxmox j'ai une partie vmbr1 avec un lan 10.20.30.0/24 qui permet d'avoir une connectivité ipv4 sans pouvoir être jointe depuis l'extérieur.
@@ -149,7 +148,7 @@ Il nous en reste une à faire, elle permettra a notre client de communiquer en d
 
 Je ne vais pas réexpliquer la totalité mais il faut comprendre qu'on peut bloquer certains protocoles, en autoriser d'autre ici etc pour ma part je vais faire un truc en any ;)
 
-### Etape 7 : Tadaaaa !
+## Etape 7 : Tadaaaa !
 
 ![pfsense wireguard](/assets/images/1701962892-87304-image.png)
 
