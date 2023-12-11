@@ -4,23 +4,30 @@ title:  "(True)NAS comme à la maison avec Wireguard + pfSense"
 date:   2023-12-11 23:36:54 +0100
 categories: tutos pfsense truenas wireguard
 ---
-[center]![Wireguard+pfSense ](/assets/images/1701962718-221022-image.png)
- ## Et une couche de TrueNAS Scale[/center]
+
+[center]
+
+![Wireguard+pfSense ](/assets/images/1701962718-221022-image.png)
+
+## Et une couche de TrueNAS Scale
+[/center]
 
 Sur un coup de tête, en période de "vacances", avec les copains dans le casque on dit beaucoup de conneries et nous en faisons tout autant. 
-Profitant que @"Greg"#8477 ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions.
+profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions.
 
 Enfin tout ça pour que dans mon crâne, je décide de profiter d'un serveur à dispo pour ressortir mon truenas de son coldstorage et refaire un truenas.
 
-Problématique TrueNAS est sur un serveur Hetzner 😅donc tu le vois venir je ne vais pas ouvrir un protocole SMB-CIFS/NFS sur le net, même avec du firewall hein ! 
+Problématique TrueNAS est sur un serveur Hetzner donc tu le vois venir je ne vais pas ouvrir un protocole SMB-CIFS/NFS sur le net, même avec du firewall hein ! 
 Et puis monopoliser une ipv4 publique comme ça en ce moment juste pour un truc simple n'est pas à l'ordre du jour... Par contre j'ai quelques IPv6 encore de dispos dans mon pool xD
 
 Résultat : installer pfSense en frontale, mais avec seulement une ipv6 publique et mettre le truenas sur une patte lan mais donc "protéger" d'internet. Et pour accéder à tout ça on va profiter de la partie WireGuard pour créer un tunnel.
 
 La partie que j'utilise c'est le split-tunneling, juste faire passer le flux nécessaire pour atteindre le TrueNAS. Pas avoir une ip en sortie de chez Hetzner, pour du full-vpn tunnel j'utilise ma stack adWireGuard sur le pi4 à la maison quand je suis dehors, ou sur celle de Oracle enfin chaque utilisation a son environnement ;)
-[center]![schéma réseau](/assets/images/1701962738-455275-image.png)[/center]
-[center]_Image tirée du site : https://www.laroberto.com_[/center]
-[center]Sur cette image, il faut pense que Server = pfSense, et Router = TrueNAS.[/center]
+[center]
+![schéma réseau](/assets/images/1701962738-455275-image.png)
+_Image tirée du site : https://www.laroberto.com_
+Sur cette image, il faut pense que Server = pfSense, et Router = TrueNAS.
+[/center]
 > ( Pour mémoire, j'utilise une partie de son article d'où est tirée cette image pour une autre utilisation dans un cadre professionnel afin de ne pas avoir à ouvrir de port du côté du lan entreprise )
 
 ### Résumons : 
@@ -29,12 +36,17 @@ La partie que j'utilise c'est le split-tunneling, juste faire passer le flux né
 - J'avais envie de découvrir wireguard sur pfsense et de m'y essayer.
 - Et puis c'était l'occasion de faire des conneries avec les copains !
 
-### Etape 1 : avoir un pfsense qui tourne 😅
+### Etape 1 : avoir un pfsense qui tourne
 Installer wireguard donc sur ce dernier une fois installé on le retrouve dans l'onglet VPN ( la partie installation se passe dans System -> Package Manager )
-[center]![wireguard pfsense](/assets/images/1701962767-974820-image.png)[/center]
+[center]
+![wireguard pfsense](/assets/images/1701962767-974820-image.png)
+[/center]
 
 ### Etape 2 : configurer le tunnel et le peer
-[center]![tunnel wireguard](/assets/images/1701962775-261594-image.png)[/center]
+[center]
+![tunnel wireguard](/assets/images/1701962775-261594-image.png)
+[/center]
+
 **Enable** : coché ( on l'active )
 **Description** : Remote Access ( faut bien qu'on sache à quoi qui sert 😅)
 **Listen Port** : 51821 ici mais le port par défaut c'est 51820/udp en gros tu choisis le port sur lequel le serveur wireguard écoute pour initier la connexion.
@@ -46,7 +58,7 @@ Nous voilà avec un tunnel reste à mettre un client.
 
 ### Etape 3 : Générer la paire de clé publique/privée côté client.
 Sous windows, quand on crée un tunnel dans wireguard il les affiches : 
-![windows tunnel ](/assets/images/1701962791-339903-image.png)
+![windows tunnel](/assets/images/1701962791-339903-image.png)
 Sous linux les commandes suivantes, permettent de générer la paire de clés:
 ```
 $ wg genkey | tee privatekey | wg pubkey > publickey
@@ -59,8 +71,9 @@ Donc nous voilà avec nos clés on peut aller créer notre peer sur pfsense.
 
 ### Etape 4 : Créer un peer
 ![pfsense wireguard](/assets/images/1701962819-965576-image.png)
-on sélectionne l'onglet Peers et on clique sur Add Peers ( le bouton vert en bas à droite 😅)
+on sélectionne l'onglet Peers et on clique sur Add Peers ( le bouton vert en bas à droite )
 ![pfsense wireguard](/assets/images/1701962829-197022-image.png)
+
 **Enable** : Coché, on va l'activer
 **Tunnel** : Tu sélectionnes le tunnel précédemment créer ( tu dois en avoir qu'un )
 **Description** : Nom du client ( ex Mathieu )
