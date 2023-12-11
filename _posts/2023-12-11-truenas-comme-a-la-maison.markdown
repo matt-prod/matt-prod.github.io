@@ -5,12 +5,9 @@ date:   2023-12-11 23:36:54 +0100
 categories: tutos pfsense truenas wireguard
 ---
 
-[center]
-
 ![Wireguard+pfSense ](/assets/images/1701962718-221022-image.png)
 
 ## Et une couche de TrueNAS Scale
-[/center]
 
 Sur un coup de tête, en période de "vacances", avec les copains dans le casque on dit beaucoup de conneries et nous en faisons tout autant. 
 profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions.
@@ -23,11 +20,10 @@ Et puis monopoliser une ipv4 publique comme ça en ce moment juste pour un truc 
 Résultat : installer pfSense en frontale, mais avec seulement une ipv6 publique et mettre le truenas sur une patte lan mais donc "protéger" d'internet. Et pour accéder à tout ça on va profiter de la partie WireGuard pour créer un tunnel.
 
 La partie que j'utilise c'est le split-tunneling, juste faire passer le flux nécessaire pour atteindre le TrueNAS. Pas avoir une ip en sortie de chez Hetzner, pour du full-vpn tunnel j'utilise ma stack adWireGuard sur le pi4 à la maison quand je suis dehors, ou sur celle de Oracle enfin chaque utilisation a son environnement ;)
-[center]
 ![schéma réseau](/assets/images/1701962738-455275-image.png)
 _Image tirée du site : https://www.laroberto.com_
 Sur cette image, il faut pense que Server = pfSense, et Router = TrueNAS.
-[/center]
+
 > ( Pour mémoire, j'utilise une partie de son article d'où est tirée cette image pour une autre utilisation dans un cadre professionnel afin de ne pas avoir à ouvrir de port du côté du lan entreprise )
 
 ### Résumons : 
@@ -38,17 +34,16 @@ Sur cette image, il faut pense que Server = pfSense, et Router = TrueNAS.
 
 ### Etape 1 : avoir un pfsense qui tourne
 Installer wireguard donc sur ce dernier une fois installé on le retrouve dans l'onglet VPN ( la partie installation se passe dans System -> Package Manager )
-[center]
 ![wireguard pfsense](/assets/images/1701962767-974820-image.png)
-[/center]
+
 
 ### Etape 2 : configurer le tunnel et le peer
-[center]
+
 ![tunnel wireguard](/assets/images/1701962775-261594-image.png)
-[/center]
+
 
 **Enable** : coché ( on l'active )
-**Description** : Remote Access ( faut bien qu'on sache à quoi qui sert 😅)
+**Description** : Remote Access ( faut bien qu'on sache à quoi qui sert )
 **Listen Port** : 51821 ici mais le port par défaut c'est 51820/udp en gros tu choisis le port sur lequel le serveur wireguard écoute pour initier la connexion.
 **Interfaces Keys** : on clique sur GENERATE pour créer la paire de clés pour ce tunnel, la partie Public servira dans le fichier de conf sur le client.
 **Interface Addresses** : le plan d'adressage dans le tunnel par exemple 10.6.210.1/24 sera l'adresse de pfSense dans le tunnel, le /24 lui permettra de mettre plein de clients. Si par sécurité on veut bloquer on peut remplacer par un /30 ce qui permettra d'utiliser 10.6.210.1 et 10.6.210.2 donc pfsense + 1 client.
@@ -121,4 +116,4 @@ Je ne vais pas réexpliquer la totalité mais il faut comprendre qu'on peut bloq
 ![pfsense wireguard](/assets/images/1701962892-87304-image.png)
 ![pfsense wireguard](/assets/images/1701962895-852594-image.png)
 
-Bien sur, ce tuto/mémo est ouvert aux modifications, adaptations, améliorations et critiques constructives 😘
+Bien sur, ce tuto/mémo est ouvert aux modifications, adaptations, améliorations et critiques constructives 
