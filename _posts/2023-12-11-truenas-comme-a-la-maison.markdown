@@ -4,15 +4,15 @@ title:  "(True)NAS comme à la maison avec Wireguard + pfSense"
 date:   2023-12-11 23:36:54 +0100
 categories: tutos pfsense truenas wireguard
 ---
-
+<p align="center">
 ![Wireguard+pfSense ](/assets/images/1701962718-221022-image.png)
 
 ## Et une couche de TrueNAS Scale
+</p>
 
 Sur un coup de tête, en période de "vacances", avec les copains dans le casque on dit beaucoup de conneries et nous en faisons tout autant. 
-profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions.
-
-Enfin tout ça pour que dans mon crâne, je décide de profiter d'un serveur à dispo pour ressortir mon truenas de son coldstorage et refaire un truenas.
+Profitant que @Gr3ggg ( on oublie pas @micferna )  ait voulu basculer de unRAID pour un TrueNAS ( on veut seulement la partie NAS ), j'ai re découvert ce dernier et pas mal d'évolutions. 
+Enfin tout ça pour que dans mon crâne, je décide de profiter d'un serveur à dispo pour ressortir mon truenas de son coldstorage et refaire un truenas. 
 
 Problématique TrueNAS est sur un serveur Hetzner donc tu le vois venir je ne vais pas ouvrir un protocole SMB-CIFS/NFS sur le net, même avec du firewall hein ! 
 Et puis monopoliser une ipv4 publique comme ça en ce moment juste pour un truc simple n'est pas à l'ordre du jour... Par contre j'ai quelques IPv6 encore de dispos dans mon pool xD
